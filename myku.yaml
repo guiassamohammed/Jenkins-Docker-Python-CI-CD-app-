@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+    name: python-app
+    namespace: default
+    labels: 
+      app: mo 
+spec: 
+    replicas: 2 
+    selector: 
+      matchLabels: 
+        app: python-app 
+    template: 
+      metadata:
+        labels: 
+          app: python-app 
+      spec: 
+          containers:
+            - name: python-app 
+              image: 19931/python
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: python-app
+   namespace: default
+   labels: 
+      app: python-app
+spec:
+  type: NodePort
+  ports: 
+    - port: 80
+      nodeport: 30000
+      name:    http 
+  selector: 
+    name: python-app
